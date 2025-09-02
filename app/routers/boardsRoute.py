@@ -21,7 +21,6 @@ async def get_boards(
     return boards
     
     
-
 @router.post("/", response_model=boards.BoardOut)
 async def create_board(
     board: boards.BoardCreate, 

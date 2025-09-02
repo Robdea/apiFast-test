@@ -9,6 +9,15 @@ from ..models.users import User
 
 router = APIRouter(prefix="/boards", tags=["Lists"])
 
+@router.get("/{board_id}/list", response_model=list[lists.ListsOut])
+async def get_lists(
+    board_id: str,
+    db: AsyncSession = Depends(database.get_db),
+):
+    res = await db.execute(select(List).where(List.board_id == board_id).order_by(List.position))
+
+    lists = res.scalars().all()
+    return lists
 
 @router.post("/{board_id}/list", response_model=lists.ListCreate)
 async def create_board(
